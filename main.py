@@ -1,66 +1,74 @@
-"""
-1. Crear un menú con la opción que el usuario desea ejecutar.
-(a. Ingresar tareas y estado de tarea, b. Cambiar el estado de las tareas, 
-c. Ver tareas y estados, d. Eliminar tareas )
-
-A) Mientras que el usuario haya elegido la opción de añadir tareas, añadir tareas con su estado valor
-predeterminado 0 (por hacer) hasta que se cumpla una condición en específico en el ciclo.
-
-B) Si hay tareas entonces pedir al usuario que escriba el numero de la tarea que desea cambiar el estado.
-Si no hay tareas perdirle al usuairio que añada tareas y volver al menú inicial.
-
-C) Si hay tareas entonces mostrar tareas y su estado. Si no hay tareas pedir al usuario que añada tareas.
-
-D) Si hay tareas entonces pedir al usuario que escriba el numero de la tarea que desea eliminar
-y verificar si desea continuar con un y/n. Si no hay tareas pedirle al usuario que añada tareas.
+# Start of the program
+from http.client import OK
 
 
+print("""Select the option you want to run \n
+1. Add taks\n
+2. Show tasks\n
+3. Delate tasks\n
+4. Exit\n""")
+opcion = int(input(("Write the option: ")))
 
-"""
-
-""" for x in range(number_of_tasks):
-    task = input(f"{x+1}. Escribe la tarea que deseas añadir: ")
-    add_tasks(task) """
-
-from atexit import register
-
+# A print menu function
+def printMenu():
+    print("""Select the option you want to run \n
+    1. Add taks\n
+    2. Show tasks\n
+    3. Delate tasks\n
+    4. Exit\n""")
+    opcion = int(input(("Write the option: ")))
+    return opcion
 
 tasks = []
-counter = 0
-def add_tasks(task):
-    tasks.append(task)
-# Mostrar tareas
-def show_tasks(tasks):
-    for task in tasks:
-        print(f"\n{counter}. {task} \n")
-
-#Inicio del programa
-print("""Te doy la bienevenida al administrador de tareas.. \n
-A continuación ingresa el número de la opción que deseas ejetucar, siendo estás: \n
-1. Añadir Tareas\n
-2. Ver tareas\n
-3. Eliminar tareas\n
-4. Salir del programa\n""")
-
-option = int(input("Ingresa el número de la acción que deseas ejecutar: "))
-if option == 1:
-    print("""Para añadir tareas ingrese tantas tareas como desee y cuando quiera parar escriba: exit""")
+delating_list = []
+# Create tasks:
+def add_tasks():
+    print("If you want to stop adding tasks write: exit")
     while True:
-        task = input(f"Escribe la tarea que deseas añadir: ")
-        add_tasks(task)
-        if task == "exit":
-            show = input("Deseas ver las tareas que añadiste? y/n:  ")
-            if show == "n":
-                print("OK")
-            if show == "y":
-                tasks.remove("exit")
-                print("Estás son las tareas que has añadido al programa:")
-                show_tasks(tasks)
+        input_task = input("Write the task: ")
+        tasks.append(input_task)
+        if input_task == "exit":
+            tasks.remove("exit")
             break
-if option == 2:
-    print("Estás son las tareas que has añadido: ")
-if option == 3:
-    print("Se eliminaron las tareas")
-if option == 4:
-    print("Bye :)")
+# Show tasks
+def show_tasks(tasks):
+    count = 0
+    print("This are your tasks: ")
+    for task in tasks:
+        count += 1
+        print(f"\n{count}. {task}\n")
+
+# Delate tasks
+def delate_tasks():
+    print("To delate a task write the the number the task.")
+    print("If you want to stop delating tasks write: exit")
+    while True:
+        show_tasks(tasks)
+        input_task = input("Write the number of task that you want to remove: ")
+        if input_task != "exit":
+            input_task = int(input_task)
+            if input_task > len(tasks) + 1 or input_task <= 0:
+                print("The number of task you write is not valid please try again")
+            else:
+                task_want_to_remove = tasks.index(input_task)
+                print(f"Are you sure you want to delate this task: {task_want_to_remove} \n")
+                decision = input("y/n to conitune: ")
+                if decision == "y":
+                    tasks.remove(task_want_to_remove)
+                    show_tasks(tasks)
+                else:
+                    print("ok")
+                    break
+        else:
+            print("ok")
+            break
+# A while loop that allow to get back to the main menu
+while opcion != 4:
+    if opcion == 1:
+        add_tasks()
+    if opcion == 2:
+        show_tasks(tasks)
+    if opcion == 3:
+        delate_tasks()
+    opcion = printMenu()
 
